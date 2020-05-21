@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Track Title Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+  </head>
+  <body>
+    <main>
+      <p><input id="input" type="text" placeholder="Enter album title here" /> <button type="button" id="submitButton">Submit</button></p>
+      <ol id="resultsList"></ol>
+    </main>
+    <script>
+      (() => {
+
+        const showResults = results => {
+
+          const resultsList = document.getElementById('resultsList');
+
+          results.forEach(result => {
+            let item = document.createElement('li');
+            item.innerText = result;
+            resultsList.appendChild(item);
+          })
+        }
+
+        const handleSubmit = () => {
+          
+          const resultsList = document.getElementById('resultsList');
+          resultsList.innerHTML = '';
+
+          const inputTextBox = document.getElementById('input');
+          const input = inputTextBox.value;
+          const url = `/api/?input=${input}`
+          fetch(url)
+            .then(response => response.json())
+            .then(data => showResults(data));
+
+        };
+
+        const button = document.getElementById('submitButton');
+        button.onclick = handleSubmit;
+        
+        const input = document.getElementById("input");
+        input.addEventListener("keyup", function(event) {
+          if (event.key === "Enter") {
+            handleSubmit();
+          }
+        });
+
+
+      })();
+    </script>
+  </body>
+</html>
